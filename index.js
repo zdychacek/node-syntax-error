@@ -1,24 +1,16 @@
-var aparse = require('acorn').parse;
+var parse = require('babylon').parse;
+
 function parse (src, opts) {
     if (!opts) opts = {}
-    return aparse(src, {
-        ecmaVersion: opts.ecmaVersion || 8,
-        allowHashBang: true
+    return parse(src, {
+        plugins: opts.plugin || []
     });
 }
 
-module.exports = function (src, file,opts) {
+module.exports = function (src, file, opts) {
     if (typeof src !== 'string') src = String(src);
-    
-    try {
-        eval('throw "STOP"; (function () { ' + src + '})()');
-        return;
-    }
-    catch (err) {
-        if (err === 'STOP') return undefined;
-        if (err.constructor.name !== 'SyntaxError') return err;
-        return errorInfo(src, file, opts);
-    }
+
+    return errorInfo(src, file, opts);
 };
 
 function errorInfo (src, file, opts) {
@@ -31,12 +23,12 @@ function errorInfo (src, file, opts) {
 
 function ParseError (err, src, file) {
     SyntaxError.call(this);
-    
+
     this.message = err.message.replace(/\s+\(\d+:\d+\)$/, '');
-    
+
     this.line = err.loc.line;
     this.column = err.loc.column + 1;
-    
+
     this.annotated = '\n'
         + (file || '(anonymous file)')
         + ':' + this.line
