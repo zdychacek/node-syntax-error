@@ -1,8 +1,8 @@
-var parse = require('babylon').parse;
+var babylon = require('babylon');
 
 function parse (src, opts) {
     if (!opts) opts = {}
-    return parse(src, {
+    return babylon.parse(src, {
         plugins: opts.parserPlugins || []
     });
 }
@@ -14,8 +14,9 @@ module.exports = function (src, file, opts) {
 };
 
 function errorInfo (src, file, opts) {
-    try { parse(src,opts) }
-    catch (err) {
+    try {
+        parse(src, opts);
+    } catch (err) {
         return new ParseError(err, src, file);
     }
     return undefined;
