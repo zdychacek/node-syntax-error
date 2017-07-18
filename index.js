@@ -3,7 +3,7 @@ var parse = require('babylon').parse;
 function parse (src, opts) {
     if (!opts) opts = {}
     return parse(src, {
-        plugins: opts.plugin || []
+        plugins: opts.parserPlugins || []
     });
 }
 

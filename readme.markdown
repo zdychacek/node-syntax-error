@@ -1,19 +1,17 @@
 # syntax-error
 
+*This is a fork of [`syntax-error`](https://www.npmjs.com/package/syntax-error) which uses [`babylon`](https://github.com/babel/babylon) parser instead of [`acorn`](https://www.npmjs.com/package/acorn).*
+
 Detect and report syntax errors in source code strings.
 
-[![build status](https://secure.travis-ci.org/substack/node-syntax-error.png)](http://travis-ci.org/substack/node-syntax-error)
-
 When you type `node src.js` you get a friendly error report about exactly where
-the syntax error is. This module lets you check for syntax errors and report
-them in a similarly friendly format that wrapping a try/catch around
-`Function()` or `vm.runInNewContext()` doesn't get you.
+the syntax error is. This module lets you check for syntax errors and report them.
 
 # example
 
 ``` js
 var fs = require('fs');
-var check = require('syntax-error');
+var check = require('@zdychacek/syntax-error');
 
 var file = __dirname + '/src.js';
 var src = fs.readFileSync(file);
@@ -35,14 +33,14 @@ ERROR DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 /home/substack/projects/node-syntax-error/example/src.js:5
         if (Array.isArray(x) res.push.apply(res, x);
                              ^
-ParseError: Unexpected identifier
+ParseError: Unexpected token, expected )
 ---------------------------------------------------------------------------
 ```
 
 # methods
 
 ``` js
-var check = require('syntax-error')
+var check = require('@zdychacek/syntax-error')
 ```
 
 ## var err = check(src, file, opts={})
@@ -57,7 +55,7 @@ If there are no syntax errors in `src`, return `undefined`.
 
 Optionally set:
 
-* `opts.ecmaVersion` - default: 8
+* `opts.parserPlugins` - specifies a list of plugins for underyling `babylon` parser.
 
 ## err.toString()
 
@@ -83,7 +81,7 @@ column number of the error in the original source (indexing starts at 1)
 With [npm](http://npmjs.org) do:
 
 ```
-npm install syntax-error
+npm install @zdychacek/syntax-error
 ```
 
 # license
